@@ -1,16 +1,19 @@
-﻿while (true)
+﻿void Main()
 {
-	int task = ReadInt("номер задания");
-
-	switch (task)
+	while (true)
 	{
-		case 54: Task54(); break;
-		case 56: Task56(); break;
-		case 58: Task58(); break;
-		case 60: Task60(); break;
+		int task = ReadInt("номер задания");
+
+		switch (task)
+		{
+			case 54: Task54(); break;
+			case 56: Task56(); break;
+			case 58: Task58(); break;
+			case 60: Task60(); break;
+			// case 62: Task62(); break;
+		}
 	}
 }
-
 
 void Task54() // Задача 54: Задайте двумерный массив. Напишите программу, которая упорядочит по убыванию элементы каждой строки двумерного массива.
 {
@@ -45,14 +48,15 @@ void Task58() // Задайте две матрицы. Напишите прог
 
 void Task60() // Сформируйте трёхмерный массив из неповторяющихся двузначных чисел. Напишите программу, которая будет построчно выводить массив, добавляя индексы каждого элемента.
 {
-	int x = ReadInt("первое измерение массива");
-	int y = ReadInt("второе измерение массива");
-	int z = ReadInt("третье измерение массива");
-	int i = x + y + z;
+	int firstLength = ReadInt("первое измерение массива");
+	int secondLength = ReadInt("второе измерение массива");
+	int thirdLength = ReadInt("третье измерение массива");
+	int i = firstLength * secondLength * thirdLength;
+	Console.WriteLine();
 	int[] array = CreateArrayUniqueElement(i);
-
-	// int[,,] array = CreateThreeDimensionIntArray(ReadInt("первое измерение массива"), ReadInt("второе измерение массива"), ReadInt("третье измерение массива"));
-	// Console.WriteLine(ThreeDimensionIntArrayToString(array));
+	Console.WriteLine();
+	int[,,] threeDArray = CreateThreeDimensionIntArray(array, firstLength, secondLength, thirdLength);
+	Console.WriteLine(ThreeDimensionArrayToString(threeDArray));
 }
 
 int ReadInt(string argument)
@@ -168,24 +172,25 @@ void MultipleMatrices(int[,] firstMatrix, int[,] secondMatrix)
 	}
 }
 
-// int[,,] CreateThreeDimensionIntArray(int firstLength, int secondLength, int thirdLength)
-// {
-// 	int[,,] result = new int[firstLength, secondLength, thirdLength];
-// 	Random rnd = new Random();
+int[,,] CreateThreeDimensionIntArray(int [] array, int firstLength, int secondLength, int thirdLength)
+{
+	int[,,] result = new int[firstLength, secondLength,thirdLength];
+	int i = 0;
 
-// 	for (int x = 0; x < result.GetLength(0); x++)
-// 	{
-// 		for (int y = 0; y < result.GetLength(1); y++)
-// 		{
-// 			for (int z = 0; z < result.GetLength(2); z++)
-// 			{
-// 				result[x,y,z] = rnd.Next(10, 100);
-// 			}	
-// 		}
-// 	}
+	for (int x = 0; x < firstLength; x++)
+	{
+ 		for (int y = 0; y < secondLength; y++)
+ 		{
+ 			for (int z = 0; z < thirdLength; z++)
+ 			{
+ 				result[x,y,z] = array[i];
+				i = i + 1;
+ 			}	
+ 		}
+ 	}
 
-// 	return result;
-// }
+ 	return result;
+}
 
 int[] CreateArrayUniqueElement(int firstLength)
 {
@@ -204,9 +209,31 @@ int[] CreateArrayUniqueElement(int firstLength)
 					result[i] = rnd.Next(10, 100);
 				count = count+1;
 			}
-		Console.WriteLine(result[i]);
+		Console.Write($"{result[i]} ");
 		count = 0;
 		}
-	}	
+	}
+	Console.Write($"{result[0]} - нулевое значение");
+	Console.WriteLine();
+	return result;
+}
+
+string ThreeDimensionArrayToString(int[,,] array)
+{
+	string result = string.Empty;
+
+	for (int x = 0; x < array.GetLength(0); x++)
+ 	{
+ 		for (int y = 0; y < array.GetLength(1); y++)
+ 		{
+ 			for (int z = 0; z < array.GetLength(2); z++)
+			{
+				result += ($"[{x}, {y}, {z}]: {array[x, y, z]}, ");
+			}
+
+		result += Environment.NewLine;
+    	}
+	}
+
 	return result;
 }
